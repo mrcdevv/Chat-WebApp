@@ -6,14 +6,14 @@ using System.Speech;
 using GTranslate;
 using System.Speech.Synthesis;
 using NAudio.Wave;
+using tts.Interfaces;
 
 namespace tts.Services
 {
-    public class TextToSpeachService
+    public class TextToSpeachService : ITextToSpeachService
     {
         public void GetAvailableVoices()
         {
-
         }
 
         public byte[] TextToSpeach(string text)
