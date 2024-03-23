@@ -26,5 +26,7 @@ namespace tts
 
             await Clients.Group(groupName).SendAsync("LeftUser", $"{userName} salió del canal");
         }
+
+
     }
 }
