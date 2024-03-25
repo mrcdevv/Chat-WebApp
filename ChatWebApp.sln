@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tts", "tts.csproj", "{310FFEB3-7909-4C05-BBF8-CDAF98DD2CDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatWebApp", "ChatWebApp.csproj", "{11589E8D-3573-418C-839E-8266075851C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{310FFEB3-7909-4C05-BBF8-CDAF98DD2CDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{310FFEB3-7909-4C05-BBF8-CDAF98DD2CDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{310FFEB3-7909-4C05-BBF8-CDAF98DD2CDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{310FFEB3-7909-4C05-BBF8-CDAF98DD2CDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11589E8D-3573-418C-839E-8266075851C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11589E8D-3573-418C-839E-8266075851C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11589E8D-3573-418C-839E-8266075851C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11589E8D-3573-418C-839E-8266075851C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {715C1EB9-B017-48AE-81E4-9CDA74E8A3A8}
+		SolutionGuid = {627CAC3A-65DB-4A00-A0F7-33D63CC5678E}
 	EndGlobalSection
 EndGlobal
