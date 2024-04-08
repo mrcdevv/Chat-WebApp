@@ -8,7 +8,7 @@ namespace ChatWebApp.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class LoginController : ControllerBase
+    public class AuthController : ControllerBase
     {
         [HttpPost]
         public async Task Login([FromBody] string user)
