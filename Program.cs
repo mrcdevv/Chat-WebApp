@@ -1,18 +1,37 @@
+using System.Text;
 using ChatWebApp.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSingleton<ChatService>();
 
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(option =>
+builder.Services.AddAuthentication(opts =>
     {
-        option.Cookie.HttpOnly = true;
-        option.Cookie.IsEssential = true;
-        option.ExpireTimeSpan = TimeSpan.FromHours(1);
-        option.SlidingExpiration = true;
+        opts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        opts.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        opts.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    }
+    )
+    .AddJwtBearer(option =>
+    {
+        option.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateAudience = true,
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            ValidateIssuer = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.Unicode.GetBytes(builder.Configuration["Jwt:Key"])),
+            ValidateLifetime = true,
+        };
     });
+
+builder.Services.AddAuthorization();
+
+builder.Configuration.AddJsonFile("appsettings.json", false, true);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -18,8 +18,5 @@ namespace ChatWebApp.Context
         public DbSet<Message> Messages { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<RoomUser> RoomUsers { get; set; }
-
-
-
     }
 }
