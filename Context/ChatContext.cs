@@ -10,6 +10,10 @@ namespace ChatWebApp.Context
     public class ChatContext : DbContext
     {
 
+        public ChatContext()
+        {
+        }
+
         public ChatContext(DbContextOptions options) : base(options)
         {
         }

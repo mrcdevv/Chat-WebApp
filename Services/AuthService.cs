@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ChatWebApp.Interfaces;
 using ChatWebApp.Models;
+using ChatWebApp.Repositories;
 using Microsoft.IdentityModel.Tokens;
 
 namespace ChatWebApp.Services
@@ -15,10 +16,12 @@ namespace ChatWebApp.Services
     {
 
         private readonly IConfiguration _configuration;
+        private readonly AuthRepository _repository;
 
         public AuthService(IConfiguration config)
         {
             _configuration = config;
+            _repository = new AuthRepository();
         }
 
         public string GetToken(User user)
@@ -39,12 +42,12 @@ namespace ChatWebApp.Services
             return jwt;
         }
 
-        public bool IsRegistered(User user)
+        public async Task<bool> IsRegistered(int userId)
         {
-            throw new NotImplementedException();
+            return await _repository.IsRegistered(userId);
         }
 
-        public bool SignUp(User user)
+        public Task<bool> SignUp(User user)
         {
             throw new NotImplementedException();
         }

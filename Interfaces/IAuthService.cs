@@ -8,8 +8,8 @@ namespace ChatWebApp.Interfaces
 {
     public interface IAuthService
     {
-        public bool IsRegistered(User user);
-        public bool SignUp(User user);
-        public string GetToken();
+        public Task<bool> IsRegistered(int userId);
+        public Task<bool> SignUp(User user);
+        public string GetToken(User user);
     }
 }
