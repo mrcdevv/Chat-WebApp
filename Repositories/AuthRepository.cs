@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ChatWebApp.Context;
+using ChatWebApp.Interfaces;
 using ChatWebApp.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ChatWebApp.Repositories
 {
-    public class AuthRepository
+    public class AuthRepository : IAuthRepository
     {
         private readonly ChatContext _context;
 
@@ -17,23 +18,23 @@ namespace ChatWebApp.Repositories
             _context = new ChatContext();
         }
 
-        public async Task<bool> IsRegistered(int userId)
+        public async Task<User?> GetUserAsync(int userId)
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId);
 
             if (user == null)
             {
-                return false;
+                return user;
             }
 
-            return true;
+            return null;
         }
 
-        public async Task<bool> CreateUser(User user)
+        public async Task<int?> CreateUserAsync(User user)
         {
             if (user == null)
             {
-                return false;
+                return null;
             }
 
             try
@@ -41,11 +42,11 @@ namespace ChatWebApp.Repositories
                 await _context.Users.AddAsync(user);
                 await _context.SaveChangesAsync();
 
-                return true;
+                return user.Id;
             }
             catch (Exception)
             {
-                return false;
+                return null;
             }
 
         }

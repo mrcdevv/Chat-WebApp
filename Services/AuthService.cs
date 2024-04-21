@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using ChatWebApp.Interfaces;
 using ChatWebApp.Models;
 using ChatWebApp.Repositories;
+using ChatWebApp.Utility;
 using Microsoft.IdentityModel.Tokens;
 
 namespace ChatWebApp.Services
@@ -16,15 +17,15 @@ namespace ChatWebApp.Services
     {
 
         private readonly IConfiguration _configuration;
-        private readonly AuthRepository _repository;
+        private readonly IAuthRepository _repository;
 
-        public AuthService(IConfiguration config)
+        public AuthService(IConfiguration config, IAuthRepository repository)
         {
             _configuration = config;
-            _repository = new AuthRepository();
+            _repository = repository;
         }
 
-        public string GetToken(User user)
+        public string CreateToken(User user)
         {
             var claims = new List<Claim>()
             {
@@ -42,14 +43,31 @@ namespace ChatWebApp.Services
             return jwt;
         }
 
-        public async Task<bool> IsRegistered(int userId)
+        public async Task<User?> GetUserAsync(int userId)
         {
-            return await _repository.IsRegistered(userId);
+            var user = await _repository.GetUserAsync(userId);
+
+            if (user == null)
+            {
+                return null;
+            }
+
+            return user;
         }
 
-        public Task<bool> SignUp(User user)
+        public async Task<bool> CreateUserAsync(User user)
         {
-            throw new NotImplementedException();
+            // Encrypt the password
+            user.Password = Encrypt.GetSHA256(user.Password);
+
+            var userId = await _repository.CreateUserAsync(user);
+
+            if (userId == null)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

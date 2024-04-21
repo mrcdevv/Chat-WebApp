@@ -6,10 +6,11 @@ using ChatWebApp.Models;
 
 namespace ChatWebApp.Interfaces
 {
-    public interface IAuthService
+    public interface IAuthRepository
     {
         public Task<User?> GetUserAsync(int userId);
-        public Task<bool> CreateUserAsync(User user);
-        public string CreateToken(User user);
+
+        public Task<int?> CreateUserAsync(User user);
+
     }
 }

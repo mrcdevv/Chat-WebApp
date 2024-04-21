@@ -26,31 +26,47 @@ namespace ChatWebApp.Controllers
 
 
         [HttpPost]
-        public async Task Login([FromBody] User user)
-        {
-
-        }
-
-        [HttpPost]
-        public async ActionResult<string> SignUp([FromBody] User user)
+        public async Task<IActionResult> Login([FromBody] User user)
         {
             if (user == null)
             {
                 return BadRequest();
             }
 
-            // check if exist in db
-            var alreadyExist = _service.IsRegistered(user.Id);
+            var userExist = await _service.GetUserAsync(user.Id);
 
-            if (!alreadyExist)
+            if (userExist == null)
             {
-                var created = _service.SignUp(user);
+                return BadRequest("User doesn't exist!");
+            }
 
-                if (created)
+            var credentials = await _service.CheckCredentials(user);
+
+            if (!credentials)
+            {
+                return BadRequest("Username or password wrong!");
+            }
+
+            return Ok(_service.CreateToken(user));
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<string>> SignUp([FromBody] User user)
+        {
+            if (user == null)
+            {
+                return BadRequest();
+            }
+
+            var userAlreadyExist = await _service.GetUserAsync(user.Id);
+
+            if (userAlreadyExist == null)
+            {
+                var userCreated = await _service.CreateUserAsync(user);
+
+                if (userCreated)
                 {
-                    // logearlo
-
-                    var token = _service.GetToken(user);
+                    var token = _service.CreateToken(user);
 
                     return Ok(token);
                 }
@@ -58,15 +74,8 @@ namespace ChatWebApp.Controllers
                 return BadRequest("An error ocurred while creating the user");
 
             }
-            else
-            {
-                return BadRequest("Username already exist!"); // buscar uno mejor a un bad request 
-            }
 
-
-
-
-
+            return Conflict("Username already exist!");
         }
     }
 }
