@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ChatWebApp.Context;
 using ChatWebApp.Interfaces;
 using ChatWebApp.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace ChatWebApp.Repositories
@@ -48,11 +49,11 @@ namespace ChatWebApp.Repositories
             {
                 return null;
             }
-
         }
 
-
-
-
+        public async Task<User> CheckCredentials(User user)
+        {
+            return user;
+        }
     }
 }

@@ -37,7 +37,7 @@ namespace ChatWebApp.Controllers
 
             if (userExist == null)
             {
-                return BadRequest("User doesn't exist!");
+                return NotFound("User doesn't exist!");
             }
 
             var credentials = await _service.CheckCredentials(user);

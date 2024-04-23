@@ -12,5 +12,7 @@ namespace ChatWebApp.Interfaces
 
         public Task<int?> CreateUserAsync(User user);
 
+        public Task<User> CheckCredentials(User user);
+
     }
 }

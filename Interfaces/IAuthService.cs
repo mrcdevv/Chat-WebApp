@@ -11,5 +11,6 @@ namespace ChatWebApp.Interfaces
         public Task<User?> GetUserAsync(int userId);
         public Task<bool> CreateUserAsync(User user);
         public string CreateToken(User user);
+        public Task<bool> CheckCredentials(User user);
     }
 }

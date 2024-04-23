@@ -57,7 +57,6 @@ namespace ChatWebApp.Services
 
         public async Task<bool> CreateUserAsync(User user)
         {
-            // Encrypt the password
             user.Password = Encrypt.GetSHA256(user.Password);
 
             var userId = await _repository.CreateUserAsync(user);
@@ -68,6 +67,25 @@ namespace ChatWebApp.Services
             }
 
             return true;
+        }
+
+        public async Task<bool> CheckCredentials(User user)
+        {
+            var userExist = await _repository.GetUserAsync(user.Id);
+
+            if (userExist == null)
+            {
+                return false;
+            }
+
+            user.Password = Encrypt.GetSHA256(user.Password);
+
+            if (user.Password == userExist.Password && user.UserName == userExist.UserName)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }
