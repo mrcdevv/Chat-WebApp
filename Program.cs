@@ -1,12 +1,16 @@
 using System.Text;
+using ChatWebApp.Interfaces;
 using ChatWebApp.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using tts.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSingleton<ChatService>();
+builder.Services.AddSingleton<IAuthService, AuthService>();
+builder.Services.AddSingleton<IChatService, ChatService>();
+builder.Services.AddSingleton<IRoomService, RoomService>();
 
 builder.Services.AddAuthentication(opts =>
     {
