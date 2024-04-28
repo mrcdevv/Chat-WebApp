@@ -31,6 +31,18 @@ namespace ChatWebApp.Repositories
             return null;
         }
 
+        public async Task<User?> GetUserAsync(string userName)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == userName);
+
+            if (user == null)
+            {
+                return user;
+            }
+
+            return null;
+        }
+
         public async Task<int?> CreateUserAsync(User user)
         {
             if (user == null)

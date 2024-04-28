@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using ChatWebApp.DTOs;
 using ChatWebApp.Interfaces;
 using ChatWebApp.Models;
 using ChatWebApp.Repositories;
@@ -43,6 +44,24 @@ namespace ChatWebApp.Services
             return jwt;
         }
 
+        public string CreateToken(CreateUserDto user)
+        {
+            var claims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.Name, user.UserName),
+            };
+
+            var privateKey = new SymmetricSecurityKey(Encoding.Unicode.GetBytes(_configuration["Jwt:Key"]));
+            var credentials = new SigningCredentials(privateKey, SecurityAlgorithms.HmacSha256);
+            var issuer = _configuration["Jwt:Issuer"];
+            var audience = _configuration["Jwt:Audience"];
+
+            var token = new JwtSecurityToken(issuer, audience, claims, expires: DateTime.Now.AddHours(1), signingCredentials: credentials);
+            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+
+            return jwt;
+        }
+
         public async Task<User?> GetUserAsync(int userId)
         {
             var user = await _repository.GetUserAsync(userId);
@@ -55,11 +74,29 @@ namespace ChatWebApp.Services
             return user;
         }
 
-        public async Task<bool> CreateUserAsync(User user)
+        public async Task<User?> GetUserAsync(string userName)
         {
-            user.Password = Encrypt.GetSHA256(user.Password);
+            var user = await _repository.GetUserAsync(userName);
 
-            var userId = await _repository.CreateUserAsync(user);
+            if (user == null)
+            {
+                return null;
+            }
+
+            return user;
+        }
+
+        public async Task<bool> CreateUserAsync(CreateUserDto user)
+        {
+            var pass = Encrypt.GetSHA256(user.Password);
+
+            var newUser = new User
+            {
+                UserName = user.UserName,
+                Password = pass,
+            };
+
+            var userId = await _repository.CreateUserAsync(newUser);
 
             if (userId == null)
             {
@@ -69,23 +106,25 @@ namespace ChatWebApp.Services
             return true;
         }
 
-        public async Task<bool> CheckCredentials(User user)
+        public async Task<bool> CheckCredentials(CreateUserDto user)
         {
-            var userExist = await _repository.GetUserAsync(user.Id);
+            var userExist = await _repository.GetUserAsync(user.UserName);
 
             if (userExist == null)
             {
                 return false;
             }
 
-            user.Password = Encrypt.GetSHA256(user.Password);
+            var loginPassword = Encrypt.GetSHA256(user.Password);
 
-            if (user.Password == userExist.Password && user.UserName == userExist.UserName)
+            if (loginPassword == userExist.Password && user.UserName == userExist.UserName)
             {
                 return true;
             }
 
             return false;
         }
+
+
     }
 }

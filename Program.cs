@@ -1,5 +1,6 @@
 using System.Text;
 using ChatWebApp.Interfaces;
+using ChatWebApp.Repositories;
 using ChatWebApp.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -8,9 +9,11 @@ using tts.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSingleton<IAuthService, AuthService>();
-builder.Services.AddSingleton<IChatService, ChatService>();
-builder.Services.AddSingleton<IRoomService, RoomService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IChatService, ChatService>();
+builder.Services.AddScoped<IRoomService, RoomService>();
+
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 
 builder.Services.AddAuthentication(opts =>
     {

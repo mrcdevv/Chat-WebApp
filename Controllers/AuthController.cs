@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using ChatWebApp.DTOs;
 using ChatWebApp.Interfaces;
 using ChatWebApp.Models;
 using Microsoft.AspNetCore.Components.Forms;
@@ -26,14 +27,15 @@ namespace ChatWebApp.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Login([FromBody] User user)
+        [Route("login")]
+        public async Task<IActionResult> Login([FromBody] CreateUserDto user)
         {
             if (user == null)
             {
                 return BadRequest();
             }
 
-            var userExist = await _service.GetUserAsync(user.Id);
+            var userExist = await _service.GetUserAsync(user.UserName);
 
             if (userExist == null)
             {
@@ -47,18 +49,19 @@ namespace ChatWebApp.Controllers
                 return BadRequest("Username or password wrong!");
             }
 
-            return Ok(_service.CreateToken(user));
+            return Ok(_service.CreateToken(userExist));
         }
 
         [HttpPost]
-        public async Task<ActionResult<string>> SignUp([FromBody] User user)
+        [Route("signup")]
+        public async Task<ActionResult<string>> SignUp([FromBody] CreateUserDto user)
         {
             if (user == null)
             {
                 return BadRequest();
             }
 
-            var userAlreadyExist = await _service.GetUserAsync(user.Id);
+            var userAlreadyExist = await _service.GetUserAsync(user.UserName);
 
             if (userAlreadyExist == null)
             {
