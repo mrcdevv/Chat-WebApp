@@ -1,9 +1,11 @@
 using System.Text;
+using ChatWebApp.Context;
 using ChatWebApp.Interfaces;
 using ChatWebApp.Repositories;
 using ChatWebApp.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using tts.Services;
 
@@ -14,6 +16,8 @@ builder.Services.AddScoped<IChatService, ChatService>();
 builder.Services.AddScoped<IRoomService, RoomService>();
 
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+
+builder.Services.AddDbContext<ChatContext>(options => options.UseSqlServer(builder.Configuration["ConnectionStrings"]));
 
 builder.Services.AddAuthentication(opts =>
     {

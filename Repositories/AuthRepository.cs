@@ -14,9 +14,9 @@ namespace ChatWebApp.Repositories
     {
         private readonly ChatContext _context;
 
-        public AuthRepository()
+        public AuthRepository(ChatContext context)
         {
-            _context = new ChatContext();
+            _context = context;
         }
 
         public async Task<User?> GetUserAsync(int userId)

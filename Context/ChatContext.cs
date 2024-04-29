@@ -14,7 +14,8 @@ namespace ChatWebApp.Context
         {
         }
 
-        public ChatContext(DbContextOptions options) : base(options)
+        public ChatContext(DbContextOptions<ChatContext> options)
+            : base(options)
         {
         }
 
