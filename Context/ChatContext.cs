@@ -28,6 +28,23 @@ namespace ChatWebApp.Context
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<Room>()
+                .HasKey(x => x.Id);
+
+            builder.Entity<Room>()
+                .Property(x => x.RoomName)
+                    .HasMaxLength(255)
+                    .IsRequired();
+
+            builder.Entity<Message>()
+                .HasKey(x => x.Id);
+
+            builder.Entity<Message>()
+                .Property(x => x.SentAt).HasDefaultValueSql("getdate()");
+
+
+            builder.Entity<RoomUser>()
+                .HasKey(x => new { x.UserId, x.RoomId });
 
         }
     }
