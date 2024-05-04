@@ -10,10 +10,6 @@ namespace ChatWebApp.Context
     public class ChatContext : DbContext
     {
 
-        public ChatContext()
-        {
-        }
-
         public ChatContext(DbContextOptions<ChatContext> options)
             : base(options)
         {
@@ -46,6 +42,26 @@ namespace ChatWebApp.Context
             builder.Entity<RoomUser>()
                 .HasKey(x => new { x.UserId, x.RoomId });
 
+
+            builder.Entity<Message>()
+                .HasOne(x => x.Room)
+                .WithMany(x => x.Messages)
+                .HasForeignKey(x => x.RoomId);
+
+            builder.Entity<Message>()
+                .HasOne(x => x.User)
+                .WithMany(x => x.Messages)
+                .HasForeignKey(x => x.UserId);
+
+            builder.Entity<RoomUser>()
+                .HasOne(x => x.User)
+                .WithMany(x => x.RoomUsers)
+                .HasForeignKey(x => x.UserId);
+
+            builder.Entity<RoomUser>()
+                .HasOne(x => x.Room)
+                .WithMany(x => x.RoomUsers)
+                .HasForeignKey(x => x.RoomId);
         }
     }
 }

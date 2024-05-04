@@ -11,7 +11,7 @@ namespace ChatWebApp.Models
         public string Content { get; set; }
         public DateTime SentAt { get; set; }
         public int UserId { get; set; }
-        public int RoomId { get; set; }
+        public Guid RoomId { get; set; }
         public User User { get; set; }
         public Room Room { get; set; }
     }
