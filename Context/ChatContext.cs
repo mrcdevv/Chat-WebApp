@@ -32,6 +32,22 @@ namespace ChatWebApp.Context
                     .HasMaxLength(255)
                     .IsRequired();
 
+            builder.Entity<User>()
+                .HasKey(x => x.Id);
+
+            builder.Entity<User>()
+                .Property(x => x.UserName)
+                    .HasMaxLength(255)
+                    .IsRequired();
+
+            builder.Entity<User>()
+                .Property(x => x.Password)
+                    .HasMaxLength(255)
+                    .IsRequired();
+
+            builder.Entity<RoomUser>()
+                .HasKey(x => new { x.UserId, x.RoomId });
+
             builder.Entity<Message>()
                 .HasKey(x => x.Id);
 
@@ -39,8 +55,7 @@ namespace ChatWebApp.Context
                 .Property(x => x.SentAt).HasDefaultValueSql("getdate()");
 
 
-            builder.Entity<RoomUser>()
-                .HasKey(x => new { x.UserId, x.RoomId });
+
 
 
             builder.Entity<Message>()
