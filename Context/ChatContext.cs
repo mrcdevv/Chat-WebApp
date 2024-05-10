@@ -55,9 +55,6 @@ namespace ChatWebApp.Context
                 .Property(x => x.SentAt).HasDefaultValueSql("getdate()");
 
 
-
-
-
             builder.Entity<Message>()
                 .HasOne(x => x.Room)
                 .WithMany(x => x.Messages)
