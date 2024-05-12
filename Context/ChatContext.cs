@@ -15,7 +15,6 @@ namespace ChatWebApp.Context
         {
         }
 
-
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<User> Users { get; set; }
@@ -24,56 +23,56 @@ namespace ChatWebApp.Context
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Room>()
-                .HasKey(x => x.Id);
+            builder.Entity<Room>(entity =>
+            {
+                entity.HasKey(x => x.Id);
 
-            builder.Entity<Room>()
-                .Property(x => x.RoomName)
+                entity.Property(x => x.RoomName)
+                    .HasMaxLength(255)
+                    .IsRequired();
+            });
+
+            builder.Entity<User>(entity =>
+            {
+                entity.HasKey(x => x.Id);
+
+                entity.Property(x => x.UserName)
                     .HasMaxLength(255)
                     .IsRequired();
 
-            builder.Entity<User>()
-                .HasKey(x => x.Id);
-
-            builder.Entity<User>()
-                .Property(x => x.UserName)
+                entity.Property(x => x.Password)
                     .HasMaxLength(255)
                     .IsRequired();
+            });
 
-            builder.Entity<User>()
-                .Property(x => x.Password)
-                    .HasMaxLength(255)
-                    .IsRequired();
+            builder.Entity<RoomUser>(entity =>
+            {
+                entity.HasKey(x => new { x.UserId, x.RoomId });
 
-            builder.Entity<RoomUser>()
-                .HasKey(x => new { x.UserId, x.RoomId });
+                entity.HasOne(x => x.User)
+                    .WithMany(x => x.RoomUsers)
+                    .HasForeignKey(x => x.UserId);
 
-            builder.Entity<Message>()
-                .HasKey(x => x.Id);
+                entity.HasOne(x => x.Room)
+                    .WithMany(x => x.RoomUsers)
+                    .HasForeignKey(x => x.RoomId);
+            });
 
-            builder.Entity<Message>()
-                .Property(x => x.SentAt).HasDefaultValueSql("getdate()");
+            builder.Entity<Message>(entity =>
+            {
+                entity.HasKey(x => x.Id);
 
+                entity.Property(x => x.SentAt)
+                    .HasDefaultValueSql("getdate()");
 
-            builder.Entity<Message>()
-                .HasOne(x => x.Room)
-                .WithMany(x => x.Messages)
-                .HasForeignKey(x => x.RoomId);
+                entity.HasOne(x => x.Room)
+                    .WithMany(x => x.Messages)
+                    .HasForeignKey(x => x.RoomId);
 
-            builder.Entity<Message>()
-                .HasOne(x => x.User)
-                .WithMany(x => x.Messages)
-                .HasForeignKey(x => x.UserId);
-
-            builder.Entity<RoomUser>()
-                .HasOne(x => x.User)
-                .WithMany(x => x.RoomUsers)
-                .HasForeignKey(x => x.UserId);
-
-            builder.Entity<RoomUser>()
-                .HasOne(x => x.Room)
-                .WithMany(x => x.RoomUsers)
-                .HasForeignKey(x => x.RoomId);
+                entity.HasOne(x => x.User)
+                    .WithMany(x => x.Messages)
+                    .HasForeignKey(x => x.UserId);
+            });
         }
     }
 }

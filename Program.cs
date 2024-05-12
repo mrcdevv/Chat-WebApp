@@ -17,7 +17,7 @@ builder.Services.AddScoped<IRoomService, RoomService>();
 
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 
-builder.Services.AddDbContext<ChatContext>(options => options.UseSqlServer(builder.Configuration["ConnectionStrings"]));
+builder.Services.AddDbContext<ChatContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ChatConnection")));
 
 builder.Services.AddAuthentication(opts =>
     {
@@ -50,6 +50,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<ChatContext>();
+    context.Database.Migrate();
+}
 
 app.UseWebSockets();
 
