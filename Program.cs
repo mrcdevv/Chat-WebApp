@@ -1,5 +1,6 @@
 using System.Text;
 using ChatWebApp.Context;
+using ChatWebApp.DbInit;
 using ChatWebApp.Interfaces;
 using ChatWebApp.Repositories;
 using ChatWebApp.Services;
@@ -54,6 +55,9 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ChatContext>();
+    var dbInit = scope.ServiceProvider.GetRequiredService<DbInitializer>();
+
+    dbInit.Initilize();
     context.Database.Migrate();
 }
 
