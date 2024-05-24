@@ -65,35 +65,21 @@ namespace ChatWebApp.Services
         public async Task<User?> GetUserAsync(int userId)
         {
             var user = await _repository.GetUserAsync(userId);
-
-            if (user == null)
-            {
-                return null;
-            }
-
             return user;
         }
 
         public async Task<User?> GetUserAsync(string userName)
         {
             var user = await _repository.GetUserAsync(userName);
-
-            if (user == null)
-            {
-                return null;
-            }
-
             return user;
         }
 
         public async Task<bool> CreateUserAsync(CreateUserDto user)
         {
-            var pass = Encrypt.GetSHA256(user.Password);
-
             var newUser = new User
             {
                 UserName = user.UserName,
-                Password = pass,
+                Password = BCrypt.Net.BCrypt.HashPassword(user.Password)
             };
 
             var userId = await _repository.CreateUserAsync(newUser);
