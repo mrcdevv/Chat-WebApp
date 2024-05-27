@@ -64,11 +64,12 @@ namespace ChatWebApp.Services
 
         public async Task<User?> GetUserAsync(int userId)
         {
+            // TODO: Change name to check if user exist
             var user = await _repository.GetUserAsync(userId);
             return user;
         }
 
-        public async Task<User?> GetUserAsync(string userName)
+        public async Task<bool> UserExist(string userName)
         {
             var user = await _repository.GetUserAsync(userName);
             return user;
@@ -84,12 +85,7 @@ namespace ChatWebApp.Services
 
             var userId = await _repository.CreateUserAsync(newUser);
 
-            if (userId == null)
-            {
-                return false;
-            }
-
-            return true;
+            return userId != null;
         }
 
         public async Task<bool> CheckCredentials(CreateUserDto user)
