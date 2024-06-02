@@ -72,7 +72,7 @@ namespace ChatWebApp.Services
         public async Task<bool> UserExist(string userName)
         {
             var user = await _repository.GetUserAsync(userName);
-            return user;
+            return use;
         }
 
         public async Task<bool> CreateUserAsync(CreateUserDto user)
