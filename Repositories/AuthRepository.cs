@@ -19,12 +19,6 @@ namespace ChatWebApp.Repositories
             _context = context;
         }
 
-        public async Task<User?> GetUserAsync(int userId)
-        {
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId);
-            return user;
-        }
-
         public async Task<User?> GetUserAsync(string userName)
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == userName);

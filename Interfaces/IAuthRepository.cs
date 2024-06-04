@@ -8,7 +8,6 @@ namespace ChatWebApp.Interfaces
 {
     public interface IAuthRepository
     {
-        public Task<User?> GetUserAsync(int userId);
         public Task<User?> GetUserAsync(string userName);
 
         public Task<int?> CreateUserAsync(User user);
