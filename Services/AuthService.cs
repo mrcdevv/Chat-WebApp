@@ -69,11 +69,7 @@ namespace ChatWebApp.Services
             return user;
         }
 
-        public async Task<bool> UserExist(string userName)
-        {
-            var user = await _repository.GetUserAsync(userName);
-            return use;
-        }
+
 
         public async Task<bool> CreateUserAsync(CreateUserDto user)
         {
