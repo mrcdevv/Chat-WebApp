@@ -44,24 +44,6 @@ namespace ChatWebApp.Services
             return jwt;
         }
 
-        public string CreateToken(CreateUserDto user)
-        {
-            var claims = new List<Claim>()
-            {
-                new Claim(ClaimTypes.Name, user.UserName),
-            };
-
-            var privateKey = new SymmetricSecurityKey(Encoding.Unicode.GetBytes(_configuration["Jwt:Key"]));
-            var credentials = new SigningCredentials(privateKey, SecurityAlgorithms.HmacSha256);
-            var issuer = _configuration["Jwt:Issuer"];
-            var audience = _configuration["Jwt:Audience"];
-
-            var token = new JwtSecurityToken(issuer, audience, claims, expires: DateTime.Now.AddHours(1), signingCredentials: credentials);
-            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-
-            return jwt;
-        }
-
         public async Task<User?> GetUserAsync(int userId)
         {
             // TODO: Change name to check if user exist
@@ -69,7 +51,11 @@ namespace ChatWebApp.Services
             return user;
         }
 
-
+        public async Task<bool> UserExist(string userName)
+        {
+            var user = await _repository.GetUserAsync(userName);
+            return use;
+        }
 
         public async Task<bool> CreateUserAsync(CreateUserDto user)
         {
@@ -103,6 +89,10 @@ namespace ChatWebApp.Services
             return false;
         }
 
-
+        public async Task<User?> GetUserAsync(string userName)
+        {
+            var user = await _repository.GetUserAsync(userName);
+            return user;
+        }
     }
 }

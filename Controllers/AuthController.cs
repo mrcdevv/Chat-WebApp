@@ -63,22 +63,23 @@ namespace ChatWebApp.Controllers
 
             var userAlreadyExist = await _service.GetUserAsync(user.UserName);
 
-            if (userAlreadyExist == null)
+            if (userAlreadyExist != null)
             {
-                var userCreated = await _service.CreateUserAsync(user);
-
-                if (userCreated)
-                {
-                    var token = _service.CreateToken(user);
-
-                    return Ok(token);
-                }
-
-                return BadRequest("An error ocurred while creating the user");
-
+                return Conflict("Username already exist!");
             }
 
-            return Conflict("Username already exist!");
+            // TODO: INSTALL AUTOMAPPER
+            var newUser = await _service.CreateUserAsync(user);
+
+            if (newUser)
+            {
+                var token = _service.CreateToken(user);
+
+                return Ok(token);
+            }
+
+            return BadRequest("An error ocurred while creating the user");
+
         }
     }
 }
