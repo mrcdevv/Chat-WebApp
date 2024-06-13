@@ -27,11 +27,6 @@ namespace ChatWebApp.Repositories
 
         public async Task<int?> CreateUserAsync(User user)
         {
-            if (user == null)
-            {
-                return null;
-            }
-
             try
             {
                 await _context.Users.AddAsync(user);

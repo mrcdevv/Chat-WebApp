@@ -44,19 +44,6 @@ namespace ChatWebApp.Services
             return jwt;
         }
 
-        public async Task<User?> GetUserAsync(int userId)
-        {
-            // TODO: Change name to check if user exist
-            var user = await _repository.GetUserAsync(userId);
-            return user;
-        }
-
-        public async Task<bool> UserExist(string userName)
-        {
-            var user = await _repository.GetUserAsync(userName);
-            return use;
-        }
-
         public async Task<bool> CreateUserAsync(CreateUserDto user)
         {
             var newUser = new User
@@ -93,6 +80,12 @@ namespace ChatWebApp.Services
         {
             var user = await _repository.GetUserAsync(userName);
             return user;
+        }
+
+        public async Task<bool> UserExistAsync(string userName)
+        {
+            var user = await _repository.GetUserAsync(userName);
+            return user != null;
         }
     }
 }

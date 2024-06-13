@@ -25,61 +25,55 @@ namespace ChatWebApp.Controllers
             _service = service;
         }
 
-
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login([FromBody] CreateUserDto user)
+        public async Task<IActionResult> Login([FromBody] CreateUserDto userDto)
         {
-            if (user == null)
+            if (userDto == null)
             {
                 return BadRequest();
             }
 
-            var userExist = await _service.GetUserAsync(user.UserName);
-
-            if (userExist == null)
+            if (!await _service.UserExistAsync(userDto.UserName))
             {
                 return NotFound("User doesn't exist!");
             }
 
-            var credentials = await _service.CheckCredentials(user);
+            var credentials = await _service.CheckCredentials(userDto);
 
             if (!credentials)
             {
                 return BadRequest("Username or password wrong!");
             }
 
-            return Ok(_service.CreateToken(userExist));
+            var user = new User { UserName = userDto.UserName };
+            var token = _service.CreateToken(user);
+
+            return Ok(token);
         }
 
         [HttpPost]
         [Route("signup")]
-        public async Task<ActionResult<string>> SignUp([FromBody] CreateUserDto user)
+        public async Task<ActionResult<string>> SignUp([FromBody] CreateUserDto userDto)
         {
-            if (user == null)
+            if (userDto == null)
             {
                 return BadRequest();
             }
 
-            var userAlreadyExist = await _service.GetUserAsync(user.UserName);
-
-            if (userAlreadyExist != null)
+            if (await _service.UserExistAsync(userDto.UserName))
             {
                 return Conflict("Username already exist!");
             }
 
-            // TODO: INSTALL AUTOMAPPER
-            var newUser = await _service.CreateUserAsync(user);
+            var newUser = await _service.CreateUserAsync(userDto);
 
             if (newUser)
             {
-                var token = _service.CreateToken(user);
-
-                return Ok(token);
+                return NoContent();
             }
 
             return BadRequest("An error ocurred while creating the user");
-
         }
     }
 }
