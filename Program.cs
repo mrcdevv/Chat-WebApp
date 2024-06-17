@@ -16,6 +16,7 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IChatService, ChatService>();
 builder.Services.AddScoped<IRoomService, RoomService>();
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 
@@ -56,7 +57,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ChatContext>();
-    var dbInit = scope.ServiceProvider.GetRequiredService<DbInitializer>();
+    var dbInit = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
 
     dbInit.Initilize();
     context.Database.Migrate();

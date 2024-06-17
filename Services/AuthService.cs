@@ -9,7 +9,6 @@ using ChatWebApp.DTOs;
 using ChatWebApp.Interfaces;
 using ChatWebApp.Models;
 using ChatWebApp.Repositories;
-using ChatWebApp.Utility;
 using Microsoft.IdentityModel.Tokens;
 
 namespace ChatWebApp.Services
@@ -44,12 +43,12 @@ namespace ChatWebApp.Services
             return jwt;
         }
 
-        public async Task<bool> CreateUserAsync(CreateUserDto user)
+        public async Task<bool> CreateUserAsync(CreateUserDto userDto)
         {
             var newUser = new User
             {
-                UserName = user.UserName,
-                Password = BCrypt.Net.BCrypt.HashPassword(user.Password)
+                UserName = userDto.UserName,
+                Password = BCrypt.Net.BCrypt.HashPassword(userDto.Password)
             };
 
             var userId = await _repository.CreateUserAsync(newUser);
@@ -57,20 +56,18 @@ namespace ChatWebApp.Services
             return userId != null;
         }
 
-        public async Task<bool> CheckCredentials(CreateUserDto user)
+        public async Task<bool> CheckCredentials(CreateUserDto userDto)
         {
-            var userExist = await _repository.GetUserAsync(user.UserName);
+            var user = await _repository.GetUserAsync(userDto.UserName);
 
-            if (userExist == null)
+            if (user == null)
             {
                 return false;
             }
 
-            var loginPassword = Encrypt.GetSHA256(user.Password);
-
-            if (loginPassword == userExist.Password && user.UserName == userExist.UserName)
+            if (userDto.UserName == user.UserName)
             {
-                return true;
+                return BCrypt.Net.BCrypt.Verify(userDto.Password, user.Password);
             }
 
             return false;
