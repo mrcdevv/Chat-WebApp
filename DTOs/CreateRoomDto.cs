@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ChatWebApp.Interfaces
+namespace ChatWebApp.DTOs
 {
-    public interface IRoomService
+    public record CreateRoomDto(string roomName)
     {
 
     }
