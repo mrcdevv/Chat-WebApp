@@ -19,8 +19,6 @@ namespace ChatWebApp.Services
             _repository = repo;
         }
 
-        // TODO: Aplicar correctamente el patron repository. O buscar la manera de implementar las operaciones generales con un generic y que todas la hereden
-
         [HttpPost]
         public async Task<ActionResult<Guid>> Create([FromBody] CreateRoomDto roomDto)
         {
