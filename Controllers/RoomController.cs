@@ -10,5 +10,8 @@ namespace ChatWebApp.Controllers
     [Route("api/[controller]")]
     public class RoomController : ControllerBase
     {
+
+
+
     }
 }
