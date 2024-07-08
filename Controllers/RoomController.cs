@@ -10,7 +10,11 @@ namespace ChatWebApp.Controllers
     [Route("api/[controller]")]
     public class RoomController : ControllerBase
     {
+        [HttpGet]
+        public async Task<IActionResult> GetRoom([FromQuery] Guid roomId)
+        {
 
+        }
 
 
     }

@@ -22,5 +22,10 @@ namespace ChatWebApp.Repositories
             await _context.Rooms.AddAsync(room);
             return room.Id;
         }
+
+        public async Task<Room?> GetRoomAsync(Guid roomId)
+        {
+            return await _context.Rooms.FindAsync(roomId);
+        }
     }
 }
