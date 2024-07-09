@@ -19,10 +19,8 @@ namespace ChatWebApp.Services
             _repository = repo;
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Guid>> Create([FromBody] CreateRoomDto roomDto)
+        public async Task<Guid> Create(Room room)
         {
-            var room = new Room { RoomName = roomDto.roomName };
             return await _repository.CreateRoomAsync(room);
         }
     }
