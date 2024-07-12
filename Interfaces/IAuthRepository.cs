@@ -10,7 +10,7 @@ namespace ChatWebApp.Interfaces
     {
         public Task<User?> GetUserAsync(string userName);
 
-        public Task<int?> CreateUserAsync(User user);
+        public Task<User> CreateUserAsync(User user);
 
         public Task<bool> CheckCredentials(User user);
 

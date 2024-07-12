@@ -8,6 +8,8 @@ namespace ChatWebApp.Interfaces
 {
     public interface IRoomRepository
     {
-        public Task<Guid> CreateRoomAsync(Room room);
+        public Task<Room> CreateRoomAsync(Room room);
+        public Task<Room?> GetRoomAsync(Guid roomId);
+
     }
 }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ChatWebApp.DTOs
 {
-    public record CreateRoomDto(string roomName)
+    public record CreateRoomDto(string RoomName)
     {
 
     }

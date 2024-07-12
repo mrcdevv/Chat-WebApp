@@ -25,29 +25,19 @@ namespace ChatWebApp.Repositories
             return user;
         }
 
-        public async Task<int?> CreateUserAsync(User user)
+        public async Task<User> CreateUserAsync(User user)
         {
-            try
-            {
-                await _context.Users.AddAsync(user);
-                await _context.SaveChangesAsync();
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
 
-                return user.Id;
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+            return user;
         }
 
         public async Task<bool> CheckCredentials(User user)
         {
             var userInDb = await GetUserAsync(user.UserName);
 
-            if (userInDb == null)
-            {
-                return false;
-            }
+            if (userInDb == null) return false;
 
             return BCrypt.Net.BCrypt.Verify(user.Password, userInDb.Password);
         }

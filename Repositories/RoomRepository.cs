@@ -17,10 +17,11 @@ namespace ChatWebApp.Repositories
             _context = context;
         }
 
-        public async Task<Guid> CreateRoomAsync(Room room)
+        public async Task<Room> CreateRoomAsync(Room room)
         {
             await _context.Rooms.AddAsync(room);
-            return room.Id;
+            await _context.SaveChangesAsync();
+            return room;
         }
 
         public async Task<Room?> GetRoomAsync(Guid roomId)
