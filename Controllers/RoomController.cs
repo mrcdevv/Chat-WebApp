@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ChatWebApp.DTOs;
+using ChatWebApp.Interfaces;
 using ChatWebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,6 +13,13 @@ namespace ChatWebApp.Controllers
     [Route("api/[controller]")]
     public class RoomController : ControllerBase
     {
+        private readonly IRoomService _service;
+
+        public RoomController(IRoomService roomService)
+        {
+            _roomService = roomService;
+        }
+
         [HttpPost]
         public async Task<IActionResult> Room([FromBody] CreateRoomDto roomDto)
         {
@@ -22,7 +30,7 @@ namespace ChatWebApp.Controllers
 
             var room = new Room { RoomName = roomDto.RoomName };
 
-            await _repository.CreateRoomAsync(room);
+            await _service.Create(room);
 
             return Ok(room);
 
