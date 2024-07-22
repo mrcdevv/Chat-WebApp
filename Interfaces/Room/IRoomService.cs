@@ -9,6 +9,6 @@ namespace ChatWebApp.Interfaces
 {
     public interface IRoomService
     {
-
+        public Task<Room> Create(Room room);
     }
 }

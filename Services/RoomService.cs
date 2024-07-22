@@ -19,7 +19,7 @@ namespace ChatWebApp.Services
             _repository = repo;
         }
 
-        public async Task<Guid> Create(Room room)
+        public async Task<Room> Create(Room room)
         {
             return await _repository.CreateRoomAsync(room);
         }

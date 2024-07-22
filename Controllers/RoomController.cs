@@ -17,7 +17,7 @@ namespace ChatWebApp.Controllers
 
         public RoomController(IRoomService roomService)
         {
-            _roomService = roomService;
+            _service = roomService;
         }
 
         [HttpPost]
