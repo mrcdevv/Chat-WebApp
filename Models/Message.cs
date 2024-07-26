@@ -9,9 +9,6 @@ namespace ChatWebApp.Models
     public class Message
     {
         public int Id { get; set; }
-
-        [Required]
-        [StringLength(255, ErrorMessage = "El mensaje debe tener un maximo de 255 caracteres!")]
         public string Content { get; set; }
         public DateTime SentAt { get; set; }
         public int UserId { get; set; }
