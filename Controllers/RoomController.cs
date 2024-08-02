@@ -33,9 +33,8 @@ namespace ChatWebApp.Controllers
             await _service.Create(room);
 
             return Ok(room);
-
-
         }
+
 
 
     }

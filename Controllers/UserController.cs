@@ -10,6 +10,11 @@ namespace ChatWebApp.Controllers
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
-
+        [HttpGet("{userId}")]
+        public IActionResult GetUser(int userId)
+        {
+            // Lógica para obtener el perfil de un usuario
+            return Ok();
+        }
     }
 }
