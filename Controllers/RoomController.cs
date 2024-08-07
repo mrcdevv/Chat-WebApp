@@ -35,6 +35,13 @@ namespace ChatWebApp.Controllers
             return Ok(room);
         }
 
+        [HttpPost("{roomId}/user/{userId}")]
+        public async Task<IActionResult> JoinRoom([FromBody] CreateRoomDto roomDto)
+        {
+            // Lógica para que un usuario ingrese a una sala
+            return Ok();
+        }
+
 
 
     }
