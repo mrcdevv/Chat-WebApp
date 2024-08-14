@@ -11,11 +11,11 @@ namespace ChatWebApp.Controllers
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly UserService _userService;
+        private readonly UserService _service;
 
         public UserController(UserService userService)
         {
-            _userService = userService;
+            _service = userService;
         }
 
 
@@ -28,10 +28,9 @@ namespace ChatWebApp.Controllers
                 return BadRequest(new { Error = "Error! Id invalida" });
             }
 
-            // Lógica para obtener el perfil de un usuario
-            var userInfo =
+            var userInfo = _service.GetUserAsync(userId);
 
-            return Ok();
+            return Ok(userInfo);
         }
 
         [HttpPatch("{userId}")]

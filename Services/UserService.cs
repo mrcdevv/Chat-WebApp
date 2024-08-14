@@ -19,7 +19,22 @@ namespace ChatWebApp.Services
 
         public async Task<UserInfoDto> GetUserAsync(int id)
         {
-            var user = await _repository.FindUserAsync(id);
+            try
+            {
+                var user = await _repository.FindUserAsync(id);
+
+                if (user == null)
+                {
+                    throw new Exception("Usuario no encontrado");
+                }
+
+                return new UserInfoDto(user.Id, user.UserName, user.Email);
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
 
 
         }
