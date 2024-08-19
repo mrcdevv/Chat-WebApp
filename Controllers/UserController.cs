@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ChatWebApp.DTOs.User.Request;
 using ChatWebApp.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,7 +35,7 @@ namespace ChatWebApp.Controllers
         }
 
         [HttpPatch("{userId}")]
-        public IActionResult User([FromBody] string userData, int userId)
+        public IActionResult User([FromBody] UserUpdateDto body, int userId)
         {
             // Lógica para actualizar el perfil de usuario
             return Ok();

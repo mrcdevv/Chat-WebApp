@@ -13,8 +13,15 @@ namespace ChatWebApp.Mappings
         public MappingProfile()
         {
             CreateMap<User, CreateUserDto>();
-            CreateMap<CreateUserDto, User>();
+
+            CreateMap<User, UserInfoDto>()
+                .ForMember(x => x.UserId, y => y.MapFrom(src => src.Id))
+                .ForMember(x => x.UserName, y => y.MapFrom(src => src.UserName))
+                .ForMember(x => x.UserEmail, y => y.MapFrom(src => src.Email))
+                .ReverseMap();
         }
+
+
 
     }
 }

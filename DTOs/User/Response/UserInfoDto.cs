@@ -2,5 +2,5 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ChatWebApp.DTOs
 {
-  public record UserInfoDto(int Id, string UserName, string? Email);
+  public record UserInfoDto(int UserId, string UserName, string? UserEmail);
 }
