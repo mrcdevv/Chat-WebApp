@@ -22,5 +22,19 @@ namespace ChatWebApp.Repositories
             return await _context.Users.FindAsync(id);
         }
 
+        public async Task<User?> UpdateUserAsync(User newData, int id)
+        {
+            var user = _context.Users.FirstOrDefault(x => x.Id == id);
+
+            if (user != null)
+            {
+                user.UserName = newData.UserName is not null ? newData.UserName : user.UserName;
+                user.Email = newData.Email is not null ? newData.Email : user.Email;
+
+                await _context.SaveChangesAsync();
+            }
+
+            return user;
+        }
     }
 }

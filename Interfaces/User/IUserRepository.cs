@@ -10,5 +10,7 @@ namespace ChatWebApp.Interfaces
     public interface IUserRepository
     {
         public Task<User?> FindUserAsync(int id);
+
+        public Task<User?> UpdateUserAsync(User newData, int id);
     }
 }
