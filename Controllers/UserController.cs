@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ChatWebApp.DTOs.User.Request;
 using ChatWebApp.Services;
+using ChatWebApp.Utility;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChatWebApp.Controllers
@@ -22,23 +23,40 @@ namespace ChatWebApp.Controllers
 
 
         [HttpGet("{userId}")]
-        public IActionResult User(int userId)
+        public async Task<IActionResult> Users(int userId)
         {
             if (userId < 0)
             {
                 return BadRequest(new { Error = "Error! Id invalida" });
             }
 
-            var userInfo = _service.GetUserAsync(userId);
+            var userInfo = await _service.GetUserAsync(userId);
 
             return Ok(userInfo);
         }
 
         [HttpPatch("{userId}")]
-        public IActionResult User([FromBody] UserUpdateDto body, int userId)
+        public async Task<IActionResult> Users([FromBody] UserUpdateDto body, int userId)
         {
-            // Lógica para actualizar el perfil de usuario
-            return Ok();
+            if (string.IsNullOrWhiteSpace(body.UserName) && string.IsNullOrWhiteSpace(body.UserEmail))
+            {
+                return BadRequest(new { Error = "Error! No se mando nada para actualizar" });
+            }
+
+            try
+            {
+                var user = await _service.UpdateUserAsync(body, userId);
+
+                return Ok(user);
+            }
+            catch (Exceptions.UserNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Error = "Se produjo un error intentado actualizar", Detalles = ex.Message });
+            }
         }
     }
 }

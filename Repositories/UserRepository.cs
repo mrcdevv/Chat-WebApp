@@ -28,8 +28,8 @@ namespace ChatWebApp.Repositories
 
             if (user != null)
             {
-                user.UserName = newData.UserName is not null ? newData.UserName : user.UserName;
-                user.Email = newData.Email is not null ? newData.Email : user.Email;
+                user.UserName = newData.UserName ?? user.UserName;
+                user.Email = newData.Email ?? user.Email;
 
                 await _context.SaveChangesAsync();
             }

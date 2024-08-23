@@ -6,7 +6,8 @@ using AutoMapper;
 using ChatWebApp.DTOs;
 using ChatWebApp.DTOs.User.Request;
 using ChatWebApp.Interfaces;
-using ChatWebApp.Interfaces;
+using ChatWebApp.Models;
+using ChatWebApp.Utility;
 
 namespace ChatWebApp.Services
 {
@@ -29,7 +30,7 @@ namespace ChatWebApp.Services
 
                 if (user == null)
                 {
-                    throw new Exception("Usuario no encontrado");
+                    throw new Exceptions.UserNotFoundException("Usuario no encontrado");
                 }
 
                 return new UserInfoDto(user.Id, user.UserName, user.Email);
@@ -41,7 +42,7 @@ namespace ChatWebApp.Services
             }
         }
 
-        public async Task<UserInfoDto> UpdateUserAsync(UserUpdateDto newData, int id)
+        public async Task<UserInfoDto> UpdateUserAsync(UserUpdateDto body, int id)
         {
             try
             {
@@ -49,18 +50,22 @@ namespace ChatWebApp.Services
 
                 if (user == null)
                 {
-                    throw new Exception("Usuario no encontrado");
+                    throw new Exceptions.UserNotFoundException("Usuario no encontrado");
                 }
 
-                //TODO: terminar el metodo en el repo y aca la implementacion
+                var newDataUser = _mapper.Map<User>(body);
+                user = await _repository.FindUserAsync(id);
 
-
+                return _mapper.Map<UserInfoDto>(user);
 
             }
-            catch (Exception)
+            catch (Exceptions.UserNotFoundException ex)
             {
-
-                throw;
+                throw new Exceptions.UserNotFoundException("Error con el usuario: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
     }
