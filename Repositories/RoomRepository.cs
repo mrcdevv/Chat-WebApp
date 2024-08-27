@@ -28,5 +28,17 @@ namespace ChatWebApp.Repositories
         {
             return await _context.Rooms.FindAsync(roomId);
         }
+
+        public async Task<bool> AddUserToRoom(Guid roomId, int userId)
+        {
+            var room = await _context.Rooms.FindAsync(roomId);
+            var user = await _context.Users.FindAsync(userId);
+
+            if (room != null && user != null) 
+            {
+                room.RoomUsers.Add(user);
+            }
+
+        }
     }
 }

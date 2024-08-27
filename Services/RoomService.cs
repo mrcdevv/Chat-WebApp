@@ -23,5 +23,10 @@ namespace ChatWebApp.Services
         {
             return await _repository.CreateRoomAsync(room);
         }
+
+        public async Task AddUserToRoom(Guid roomId, int userId)
+        {
+
+        }
     }
 }
