@@ -10,5 +10,6 @@ namespace ChatWebApp.Interfaces
     public interface IRoomService
     {
         public Task<Room> Create(Room room);
+        public Task<bool> AddUserToRoom(Guid roomId, int userId)
     }
 }

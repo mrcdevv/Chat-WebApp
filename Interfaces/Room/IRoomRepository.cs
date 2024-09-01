@@ -10,6 +10,8 @@ namespace ChatWebApp.Interfaces
     {
         public Task<Room> CreateRoomAsync(Room room);
         public Task<Room?> GetRoomAsync(Guid roomId);
+        public Task<bool> AddUserToRoom(Guid roomId, int userId);
+        public Task<RoomUser?> GetUserAsync(Guid roomId, int userId);
 
     }
 }

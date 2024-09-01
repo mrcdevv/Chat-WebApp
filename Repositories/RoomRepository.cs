@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ChatWebApp.Context;
 using ChatWebApp.Interfaces;
 using ChatWebApp.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ChatWebApp.Repositories
 {
@@ -34,11 +35,20 @@ namespace ChatWebApp.Repositories
             var room = await _context.Rooms.FindAsync(roomId);
             var user = await _context.Users.FindAsync(userId);
 
-            if (room != null && user != null) 
+            if (room != null && user != null)
             {
-                room.RoomUsers.Add(user);
+                room.RoomUsers.Add(new RoomUser { RoomId = roomId, UserId = userId, JoinedAt = DateTime.UtcNow });
+
+                await _context.SaveChangesAsync();
+                return true;
             }
 
+            return false;
+        }
+
+        public async Task<RoomUser?> GetUserAsync(Guid roomId, int userId)
+        {
+            return await _context.RoomUsers.FindAsync(roomId, userId);
         }
     }
 }

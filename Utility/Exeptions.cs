@@ -9,9 +9,14 @@ namespace ChatWebApp.Utility
     {
         public class UserNotFoundException : Exception
         {
-            public UserNotFoundException() : base("Usuario no enccontrado") { }
+            public UserNotFoundException() : base("Usuario no enccontrado.") { }
 
             public UserNotFoundException(string message) : base(message) { }
+        }
+
+        public class IdIsNullOrNegativeException : Exception
+        {
+            public IdIsNullOrNegativeException(string idName) : base($"{idName} debe ser una ID valida.") { }
         }
 
 

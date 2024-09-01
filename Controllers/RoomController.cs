@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ChatWebApp.DTOs;
 using ChatWebApp.Interfaces;
 using ChatWebApp.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChatWebApp.Controllers
@@ -38,7 +39,29 @@ namespace ChatWebApp.Controllers
         [HttpPost("{roomId}/user/{userId}")]
         public async Task<IActionResult> JoinRoom(Guid roomId, int userId)
         {
-            // Lógica para que un usuario ingrese a una sala
+            try
+            {
+                if (roomId == Guid.Empty)
+                    return BadRequest(new { Error = "Se debe enviar una id de sala valida" });
+
+                if (userId <= 0)
+                    return BadRequest(new { Error = "Se debe enviar una id de usuario valida" });
+
+                if (await _service.AddUserToRoom(roomId, userId))
+                {
+                    return NoContent();
+                }
+
+
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+
+
+
             return Ok();
         }
 

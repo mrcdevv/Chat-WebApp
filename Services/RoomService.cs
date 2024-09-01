@@ -6,6 +6,7 @@ using ChatWebApp.DTOs;
 using ChatWebApp.Interfaces;
 using ChatWebApp.Models;
 using ChatWebApp.Repositories;
+using ChatWebApp.Utility;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChatWebApp.Services
@@ -24,9 +25,12 @@ namespace ChatWebApp.Services
             return await _repository.CreateRoomAsync(room);
         }
 
-        public async Task AddUserToRoom(Guid roomId, int userId)
+        public async Task<bool> AddUserToRoom(Guid roomId, int userId)
         {
+            if (await _repository.GetUserAsync(roomId, userId) != null)
+                throw new Exception("El usuario ya existe en esta sala.");
 
+            return await _repository.AddUserToRoom(roomId, userId);
         }
     }
 }
