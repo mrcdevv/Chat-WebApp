@@ -14,6 +14,12 @@ namespace ChatWebApp.Utility
             public UserNotFoundException(string message) : base(message) { }
         }
 
+        public class UserAlreadyExistException : Exception
+        {
+            public UserAlreadyExistException() : base("El usuario ya se encuentra registrado.") { }
+            public UserAlreadyExistException(string message) : base(message) { }
+        }
+
         public class IdIsNullOrNegativeException : Exception
         {
             public IdIsNullOrNegativeException(string idName) : base($"{idName} debe ser una ID valida.") { }

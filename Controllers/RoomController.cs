@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using System.Web.Http.Results;
 using ChatWebApp.DTOs;
 using ChatWebApp.Interfaces;
 using ChatWebApp.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using static ChatWebApp.Utility.Exceptions;
 
 namespace ChatWebApp.Controllers
 {
@@ -51,13 +53,14 @@ namespace ChatWebApp.Controllers
                 {
                     return NoContent();
                 }
-
-
             }
-            catch (System.Exception)
+            catch (UserAlreadyExistException ex)
             {
-
-                throw;
+                return BadRequest(new { Error = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return new StatusCodeResult(500);
             }
 
 

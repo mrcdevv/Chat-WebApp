@@ -8,6 +8,7 @@ using ChatWebApp.Models;
 using ChatWebApp.Repositories;
 using ChatWebApp.Utility;
 using Microsoft.AspNetCore.Mvc;
+using static ChatWebApp.Utility.Exceptions;
 
 namespace ChatWebApp.Services
 {
@@ -28,7 +29,7 @@ namespace ChatWebApp.Services
         public async Task<bool> AddUserToRoom(Guid roomId, int userId)
         {
             if (await _repository.GetUserAsync(roomId, userId) != null)
-                throw new Exception("El usuario ya existe en esta sala.");
+                throw new UserAlreadyExistException("El usuario ya existe en esta sala.");
 
             return await _repository.AddUserToRoom(roomId, userId);
         }
