@@ -58,13 +58,10 @@ namespace ChatWebApp.Controllers
             {
                 return BadRequest(new { Error = ex.Message });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return new StatusCodeResult(500);
+                return new Microsoft.AspNetCore.Mvc.StatusCodeResult((int)HttpStatusCode.InternalServerError);
             }
-
-
-
             return Ok();
         }
 
