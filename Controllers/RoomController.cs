@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http.Results;
+using AutoMapper;
 using ChatWebApp.DTOs;
 using ChatWebApp.Interfaces;
 using ChatWebApp.Models;
@@ -17,10 +18,12 @@ namespace ChatWebApp.Controllers
     public class RoomController : ControllerBase
     {
         private readonly IRoomService _service;
+        private readonly IMapper _mapper;
 
-        public RoomController(IRoomService roomService)
+        public RoomController(IRoomService roomService, IMapper mapper)
         {
             _service = roomService;
+            _mapper = mapper;
         }
 
         [HttpPost]
@@ -31,11 +34,18 @@ namespace ChatWebApp.Controllers
                 return BadRequest(new { Error = "Error! Se debe enviar un body completo" });
             }
 
-            var room = new Room { RoomName = roomDto.RoomName };
+            try
+            {
+                var room = _mapper.Map<Room>(roomDto);
 
-            await _service.Create(room);
+                await _service.Create(room);
 
-            return Ok(room);
+                return Ok(room);
+            }
+            catch (Exception)
+            {
+                return new Microsoft.AspNetCore.Mvc.StatusCodeResult((int)HttpStatusCode.InternalServerError);
+            }
         }
 
         [HttpPost("{roomId}/user/{userId}")]
@@ -62,10 +72,8 @@ namespace ChatWebApp.Controllers
             {
                 return new Microsoft.AspNetCore.Mvc.StatusCodeResult((int)HttpStatusCode.InternalServerError);
             }
-            return Ok();
+
+            return BadRequest(new { Error = "Se produjo un error desconocido" });
         }
-
-
-
     }
 }

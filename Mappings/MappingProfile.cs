@@ -25,6 +25,9 @@ namespace ChatWebApp.Mappings
                 .ForMember(x => x.UserName, y => y.MapFrom(src => src.UserName))
                 .ForMember(x => x.UserEmail, y => y.MapFrom(src => src.Email))
                 .ReverseMap();
+
+            CreateMap<CreateRoomDto, Room>()
+                .ForMember(x => x.RoomName, y => y.MapFrom(src => src.RoomName));
         }
 
 
