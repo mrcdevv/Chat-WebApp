@@ -7,6 +7,5 @@ namespace ChatWebApp.DTOs
 {
     public record CreateRoomDto(string RoomName)
     {
-
     }
 }
